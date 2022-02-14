@@ -15,11 +15,11 @@ namespace Identity.Consumer.Consumers
             _logger = logger;
         }
 
-        public async Task Consume(ConsumeContext<AddUser> context)
+        public Task Consume(ConsumeContext<AddUser> context)
         {
-            await Console.Out.WriteLineAsync(context.Message.Id.ToString());
-
             _logger.LogInformation($"Mensagem recebida: " + $"{context.Message.Id}");
+
+            return Task.CompletedTask;
         }
     }
 }
