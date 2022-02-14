@@ -1,7 +1,6 @@
 ﻿using Identity.Contracts.Messages;
 using MassTransit;
 using Microsoft.Extensions.Logging;
-using System;
 using System.Threading.Tasks;
 
 namespace Identity.Consumer.Consumers

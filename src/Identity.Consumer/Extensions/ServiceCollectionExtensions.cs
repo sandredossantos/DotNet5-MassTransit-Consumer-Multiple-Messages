@@ -15,11 +15,14 @@ namespace Identity.Consumer.Extensions
         {
             services.AddMassTransit(config =>
             {
+                config.AddConsumer<AddUserConsumer>();
+                config.AddConsumer<DeleteUserConsumer>();
+
                 config.UsingRabbitMq((context, cfg) =>
                 {
                     cfg.ReceiveEndpoint("queue:add:user", e =>
                     {
-                        e.Consumer<AddUserConsumer>(context, c =>
+                        e.ConfigureConsumer<AddUserConsumer>(context, c =>
                         {
                             c.UseMessageRetry(retry =>
                             {
@@ -46,7 +49,7 @@ namespace Identity.Consumer.Extensions
 
                     cfg.ReceiveEndpoint("queue:delete:user", e =>
                     {
-                        e.Consumer<DeleteUserConsumer>(context, c =>
+                        e.ConfigureConsumer<DeleteUserConsumer>(context, c =>
                         {
                             c.UseMessageRetry(retry =>
                             {

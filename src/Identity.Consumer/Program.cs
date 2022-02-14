@@ -17,8 +17,6 @@ namespace Identity.Consumer
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddMassTransitConfiguration();
-                    services.AddScoped<AddUserConsumer>();
-                    services.AddScoped<DeleteUserConsumer>();
                 });
     }
 }
