@@ -1,9 +1,11 @@
-﻿using Identity.Consumer.Consumers;
+﻿using GreenPipes;
+using Identity.Consumer.Consumers;
 using Identity.Contracts.Messages;
 using MassTransit;
 using MassTransit.MultiBus;
 using Microsoft.Extensions.DependencyInjection;
 using RabbitMQ.Client;
+using System;
 
 namespace Identity.Consumer.Extensions
 {
@@ -17,7 +19,15 @@ namespace Identity.Consumer.Extensions
                 {
                     cfg.ReceiveEndpoint("queue:add:user", e =>
                     {
-                        e.Consumer<AddUserConsumer>(context);
+                        e.Consumer<AddUserConsumer>(context, c =>
+                        {
+                            c.UseMessageRetry(retry =>
+                            {
+                                retry.Interval(1, TimeSpan.FromSeconds(10));
+                            });
+
+                            c.UseConcurrentMessageLimit(10);
+                        });
 
                         e.ExchangeType = ExchangeType.Direct;
                         e.ConfigureConsumeTopology = false;
@@ -37,7 +47,15 @@ namespace Identity.Consumer.Extensions
 
                     cfg.ReceiveEndpoint("queue:delete:user", e =>
                     {
-                        e.Consumer<DeleteUserConsumer>(context);
+                        e.Consumer<DeleteUserConsumer>(context, c =>
+                        {
+                            c.UseMessageRetry(retry =>
+                            {
+                                retry.Interval(1, TimeSpan.FromSeconds(10));
+                            });
+
+                            c.UseConcurrentMessageLimit(10);
+                        });
 
                         e.ExchangeType = ExchangeType.Direct;
                         e.ConfigureConsumeTopology = false;

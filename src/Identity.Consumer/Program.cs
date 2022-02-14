@@ -1,4 +1,6 @@
+using Identity.Consumer.Consumers;
 using Identity.Consumer.Extensions;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 
 namespace Identity.Consumer
@@ -15,6 +17,8 @@ namespace Identity.Consumer
                 .ConfigureServices((hostContext, services) =>
                 {
                     services.AddMassTransitConfiguration();
+                    services.AddScoped<AddUserConsumer>();
+                    services.AddScoped<DeleteUserConsumer>();
                 });
     }
 }
