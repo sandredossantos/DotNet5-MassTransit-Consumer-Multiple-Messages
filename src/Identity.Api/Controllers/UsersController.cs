@@ -26,7 +26,7 @@ namespace Identity.Api.Controllers
                 return BadRequest();
             }
 
-            await _bus.Publish<AddUser>(new { user.Id }, x => x.SetRoutingKey("A"));
+            await _bus.Publish<AddUser>(new { user.Id });
 
             return Ok();
         }
@@ -47,7 +47,7 @@ namespace Identity.Api.Controllers
         public async Task<IActionResult> Delete(Guid id)
         {
             
-            await _bus.Publish<DeleteUser>(new { Id = id }, x => x.SetRoutingKey("B"));
+            await _bus.Publish<DeleteUser>(new { Id = id });
 
             return Ok();
         }

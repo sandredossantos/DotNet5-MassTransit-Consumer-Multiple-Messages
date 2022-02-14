@@ -38,7 +38,6 @@ namespace Identity.Consumer.Extensions
                         e.Bind<AddUser>(b =>
                         {
                             b.ExchangeType = ExchangeType.Direct;
-                            b.RoutingKey = "A";
                         });
 
                         e.DiscardFaultedMessages();
@@ -66,7 +65,6 @@ namespace Identity.Consumer.Extensions
                         e.Bind<DeleteUser>(b =>
                         {
                             b.ExchangeType = ExchangeType.Direct;
-                            b.RoutingKey = "B";
                         });
 
                         e.DiscardFaultedMessages();
