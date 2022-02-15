@@ -1,7 +1,6 @@
-﻿using Identity.Contracts.Messages;
+﻿using Identity.Contracts.Extensions;
 using MassTransit;
 using Microsoft.Extensions.DependencyInjection;
-using RabbitMQ.Client;
 using System;
 
 namespace Identity.Api.Extensions
@@ -14,22 +13,13 @@ namespace Identity.Api.Extensions
             {
                 config.AddBus(provider => Bus.Factory.CreateUsingRabbitMq(config =>
                 {
+                    config.ConfigureMessageTopology();
+
                     config.Host(new Uri("rabbitmq://localhost"), h =>
                     {
                         h.Username("guest");
                         h.Password("guest");
                     });
-
-                    config.Publish<AddUser>(p =>
-                    {
-                        p.ExchangeType = ExchangeType.Direct;
-                    });
-
-                    config.Publish<DeleteUser>(p =>
-                    {
-                        p.ExchangeType = ExchangeType.Direct;
-                    });
-
                 }));
             });
 
