@@ -16,25 +16,21 @@ namespace Identity.Consumer.ConsumersDefinition
         }
 
         protected override void ConfigureConsumer(
-            IReceiveEndpointConfigurator endpointConfigurator, 
-            IConsumerConfigurator<AddUserConsumer> consumerConfigurator )
+            IReceiveEndpointConfigurator endpointConfigurator,
+            IConsumerConfigurator<AddUserConsumer> consumerConfigurator)
         {
             endpointConfigurator.ConfigureConsumeTopology = false;
 
-            if(endpointConfigurator is IRabbitMqReceiveEndpointConfigurator rmq)
+            if (endpointConfigurator is IRabbitMqReceiveEndpointConfigurator rmq)
             {
-                rmq.Bind<AddUser>(x =>
-                {                    
-                    x.ExchangeType = ExchangeType.Direct;
-                });
-
                 rmq.ExchangeType = ExchangeType.Direct;
                 rmq.PublishFaults = false;
                 rmq.PrefetchCount = 10;
-                rmq.Lazy = true;
-                                
+                rmq.BindQueue = false;
+
+                rmq.ConfigureMessageTopology<AddUser>(false);
                 rmq.DiscardFaultedMessages();
-                rmq.DiscardSkippedMessages();                
+                rmq.DiscardSkippedMessages();
             }
         }
     }

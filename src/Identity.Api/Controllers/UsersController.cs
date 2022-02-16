@@ -19,14 +19,14 @@ namespace Identity.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([FromBody]User user)
+        public async Task<IActionResult> Create([FromBody] User user)
         {
-            if(user == null)
+            if (user == null)
             {
                 return BadRequest();
             }
 
-            await _bus.Publish<AddUser>(new { user.Id });
+            await _bus.Publish<AddUser>(new { user.Id }, x => x.SetRoutingKey("add:key"));
 
             return Ok();
         }
@@ -46,8 +46,8 @@ namespace Identity.Api.Controllers
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(Guid id)
         {
-            
-            await _bus.Publish<DeleteUser>(new { Id = id });
+
+            await _bus.Publish<DeleteUser>(new { Id = id }, x => x.SetRoutingKey("delete:key"));
 
             return Ok();
         }

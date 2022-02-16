@@ -24,16 +24,12 @@ namespace IIdentity.Consumer.ConsumersDefinition
 
             if (endpointConfigurator is IRabbitMqReceiveEndpointConfigurator rmq)
             {
-                rmq.Bind<AddUser>(x =>
-                {
-                    x.ExchangeType = ExchangeType.Direct;
-                });
-
                 rmq.ExchangeType = ExchangeType.Direct;
                 rmq.PublishFaults = false;
                 rmq.PrefetchCount = 10;
-                rmq.Lazy = true;
+                rmq.BindQueue = false;
 
+                rmq.ConfigureMessageTopology<DeleteUser>(false);
                 rmq.DiscardFaultedMessages();
                 rmq.DiscardSkippedMessages();
             }

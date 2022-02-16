@@ -14,11 +14,21 @@ namespace Identity.Contracts.Extensions
             config.Publish<AddUser>(x =>
             {
                 x.ExchangeType = ExchangeType.Direct;
+                x.BindQueue("content.user", "add:user:consumer", x =>
+                {
+                    x.RoutingKey = "add:key";
+                    x.ExchangeType = ExchangeType.Direct;
+                });
             });
 
             config.Publish<DeleteUser>(x =>
             {
                 x.ExchangeType = ExchangeType.Direct;
+                x.BindQueue("content.user", "delete:user:consumer", x =>
+                {
+                    x.RoutingKey = "delete:key";
+                    x.ExchangeType = ExchangeType.Direct;
+                });
             });
         }
     }
